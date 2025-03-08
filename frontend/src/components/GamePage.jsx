@@ -1,4 +1,4 @@
-import React, { use, useContext, useState } from 'react'
+import React, { use, useContext, useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'  // Fixed import
 import FindImageComponent from './FindImageComponent'
 import concertImg from '../assets/concert.jpg'
@@ -6,21 +6,27 @@ import partyImg from '../assets/party.png'
 import gardenImg from '../assets/office.jpg'
 import useChar from '../context/charContext'
 import axios from 'axios'
+import correct from '../assets/correct.mp3'
+import wrong from '../assets/wrong.mp3'
 
 const GamePage = () => {
   const BASE_URL = 'http://localhost:3000'
   const { id } = useParams()
   const { dataset } = useChar()
 
+  const partyChar = [1, 2, 3]
+  const concertChar = [4, 5, 6]
+  const gardenChar = [7, 8, 9]
+
   const [clicked, setClicked] = useState(false)
+  const [isFound, setIsFound] = useState([])
   const [x, setX] = useState(null)
   const [y, setY] = useState(null)
 
   const handleCharClick = (e, charId) => {
     e.preventDefault()
-    console.log(x, y, charId)
     isMatching(x, y, charId)
-    
+    setClicked(false)
   }
 
   const isMatching = async (x, y, charId) => {
@@ -33,8 +39,18 @@ const GamePage = () => {
       }, {
         withCredentials: true
       });
-      
-      console.log(res.data); // Log the response data
+      const {message} = res.data
+      if (message === 'Correct') {
+        new Audio(correct).play()
+        setIsFound(prev => {
+          if (!prev.includes(charId)) {
+            return [...prev, charId];
+          }
+          return prev;
+        });
+      } else {
+        new Audio(wrong).play()
+      }
     } catch (error) {
       console.error('Error in isMatching:', error);
     }
@@ -76,6 +92,23 @@ const GamePage = () => {
       return gardenImg
     }
   }
+
+  const checkGameOver = () => {
+    const sortedArr = [...isFound].sort()
+
+    const toCheck = sortedArr.toString()
+    const partyCheck = partyChar.toString()
+    const concertCheck = concertChar.toString()
+    const gardenCheck = gardenChar.toString()
+
+    if(toCheck === partyCheck || toCheck === concertCheck || toCheck === gardenCheck){
+      console.log('Game Over')
+    }
+  }
+
+  useEffect(() => {
+    checkGameOver()
+  }, [isFound])
 
   return (
     <div className=''>

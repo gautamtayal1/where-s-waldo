@@ -24,6 +24,8 @@ model Character {
   name   String
   game   Game   @relation(fields: [gameId], references: [id])
   gameId Int
-  xCor   Int
-  yCor   Int
+  xStart Int
+  xEnd   Int
+  yStart Int
+  yEnd   Int
 }

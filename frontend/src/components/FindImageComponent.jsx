@@ -15,7 +15,6 @@ const FindImageComponent = ({page}) => {
   const {dataset} = useChar()
 
   return (
-    
     <div className='relative flex justify-center items-center gap-10 p-4'>
       {Object.values(dataset[page]).map((data, index) => (
         <div key={index}>

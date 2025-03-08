@@ -20,7 +20,7 @@ createRoot(document.getElementById('root')).render(
             <Route path='/home' element={<Homepage />} />
             <Route path='/loading' element={<LoadingPage />} />
             <Route path='/guide/:id' element={<GuidePage />} />
-            <Route path='/game' element={<GamePage />} />
+            <Route path='/game/:id' element={<GamePage />} />
             <Route path='/gameover' element={<GameOverPage />} />
             <Route path='/leaderboard' element={<Leaderboard />} />
         </Route>

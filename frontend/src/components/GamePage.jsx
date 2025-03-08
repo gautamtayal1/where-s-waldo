@@ -10,6 +10,7 @@ import correct from '../assets/correct.mp3'
 import wrong from '../assets/wrong.mp3'
 import { useNavigate } from 'react-router-dom'
 import Stopwatch from './Stopwatch'
+import { useRef } from 'react';
 
 const GamePage = () => {
   const BASE_URL = 'http://localhost:3000'
@@ -20,11 +21,15 @@ const GamePage = () => {
   const concertChar = [4, 5, 6]
   const gardenChar = [7, 8, 9]
 
+
+  const sessionCreatedRef = useRef(false);  
   const [isRunning, setIsRunning] = useState(false)
   const [clicked, setClicked] = useState(false)
   const [isFound, setIsFound] = useState([])
   const [x, setX] = useState(null)
   const [y, setY] = useState(null)
+  const [sessionId, setSessionId] = useState(null)
+  const [sessionCreated, setSessionCreated] = useState(false)
 
   const handleCharClick = (e, charId) => {
     e.preventDefault()
@@ -102,6 +107,7 @@ const GamePage = () => {
     if(toCheck === partyCheck || toCheck === concertCheck || toCheck === gardenCheck){
       console.log('Game Over')
       setIsRunning(false)
+      endSession()
       navigate('/gameover')
     }
   }
@@ -112,9 +118,46 @@ const GamePage = () => {
     setIsFound([])
   }
 
+  const createSession = async () => {
+    try {
+      const startTime = new Date().toISOString();
+      const res = await axios.post(BASE_URL + "/game/session/create", {
+        startTime,
+        gameName: id
+      }, {
+        withCredentials: true
+      });
+      console.log(res.data)
+      setSessionId(res.data.id)
+    } catch (error) {
+      console.error('Error in createSession:', error);
+      alert('Failed to create game session. Please try again.');
+    }
+  };
+
+  const endSession = async () => {
+    try {
+      const endTime = new Date().toISOString();
+      const res = await axios.put(BASE_URL + '/game/session/end', {
+        endTime, sessionId
+      }, {
+        withCredentials: true
+      });
+      console.log(res.data)
+    } catch (error) {
+      console.error('Error in endSession:', error);
+      alert('Failed to end game session. Please try again.');
+    }
+  };
+
   useEffect(() => {
-    setIsRunning(true)
-  }, [])
+    if (!sessionCreatedRef.current) {
+      setIsRunning(true);
+      createSession();
+      sessionCreatedRef.current = true; 
+    }
+  }, []);
+  
 
   return (
     <div className=''>

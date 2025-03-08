@@ -11,7 +11,7 @@ const GuideComp = ({page}) => {
   return (
     <div className='flex flex-col items-center'>
       <h1 className='font-bold text-3xl mb-10 mt-5'>{`The ${page}`}</h1>
-      <p className='text-xl mb-5'>People to find</p>
+      <p className='text-xl mb-5'>Characters to find</p>
       <div className=''>
         { page && <FindImageComponent page={page}/>}
       </div>

@@ -16,8 +16,8 @@ const GamePage = () => {
     e.stopPropagation()
     console.log("clicked handled")
     const rect = e.target.getBoundingClientRect();
-    const x = ((e.clientX - rect.left)/ rect.width) * 100;
-    const y = ((e.clientY - rect.top)/ rect.height) * 100;
+    const x = Math.round(((e.clientX - rect.left)/ rect.width) * 100);
+    const y = Math.round(((e.clientY - rect.top)/ rect.height) * 100);
     console.log(x, y);
     
   }

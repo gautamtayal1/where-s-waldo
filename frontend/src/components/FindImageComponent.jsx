@@ -8,26 +8,11 @@ import concertImage3 from '../assets/concert3.png'
 import gardenImage1 from '../assets/office1.png'
 import gardenImage2 from '../assets/office2.png'
 import gardenImage3 from '../assets/office3.png'
+import useChar from '../context/charContext'
 
 const FindImageComponent = ({page}) => {
 
-  const dataset ={
-    party : {
-      person1: ['Jenna', partyImage1],
-      person2: ['Alex', partyImage2],
-      person3: ['Marcus', partyImage3],
-    },
-    concert : {
-      person1: ['Taylor', concertImage1],
-      person2: ['Casey', concertImage2],
-      person3: ['Jordan', concertImage3],
-    },
-    garden : {
-      person1: ['Evelyn', gardenImage1],
-      person2: ['Leo', gardenImage2],
-      person3: ['Jen', gardenImage3],
-    },
-  }
+  const {dataset} = useChar()
 
   return (
     
@@ -47,8 +32,6 @@ const FindImageComponent = ({page}) => {
       
     ))}
     </div>
-    
-   
   )
 }
 

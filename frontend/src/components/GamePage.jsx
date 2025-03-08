@@ -9,6 +9,7 @@ import axios from 'axios'
 import correct from '../assets/correct.mp3'
 import wrong from '../assets/wrong.mp3'
 import { useNavigate } from 'react-router-dom'
+import Stopwatch from './Stopwatch'
 
 const GamePage = () => {
   const BASE_URL = 'http://localhost:3000'
@@ -19,6 +20,7 @@ const GamePage = () => {
   const concertChar = [4, 5, 6]
   const gardenChar = [7, 8, 9]
 
+  const [isRunning, setIsRunning] = useState(false)
   const [clicked, setClicked] = useState(false)
   const [isFound, setIsFound] = useState([])
   const [x, setX] = useState(null)
@@ -29,7 +31,6 @@ const GamePage = () => {
     isMatching(x, y, charId)
     setClicked(false)
   }
-
   const isMatching = async (x, y, charId) => {
     try {
       const res = await axios.post(BASE_URL + '/game/check', 
@@ -56,7 +57,6 @@ const GamePage = () => {
       console.error('Error in isMatching:', error);
     }
   };
-
   const handleClick = (e) => {
     e.preventDefault()
     const rect = e.target.getBoundingClientRect();
@@ -67,7 +67,6 @@ const GamePage = () => {
     setClicked(true)
     positionOverlay(x, y)
   }
-
   const positionOverlay = (x, y) => {
     const overlay = document.querySelector('.overlay')
     if (overlay) {
@@ -83,7 +82,6 @@ const GamePage = () => {
       }
     }
   }
-
   const imageLink = () => {
     if(id === 'concert'){
       return concertImg
@@ -93,7 +91,6 @@ const GamePage = () => {
       return gardenImg
     }
   }
-
   const checkGameOver = () => {
     const sortedArr = [...isFound].sort()
 
@@ -104,23 +101,26 @@ const GamePage = () => {
 
     if(toCheck === partyCheck || toCheck === concertCheck || toCheck === gardenCheck){
       console.log('Game Over')
+      setIsRunning(false)
       navigate('/gameover')
     }
   }
-
   useEffect(() => {
     checkGameOver()
   }, [isFound])
-
   const handleExit = () => {
     setIsFound([])
   }
+
+  useEffect(() => {
+    setIsRunning(true)
+  }, [])
 
   return (
     <div className=''>
       <div className='timer h-[12vh] flex justify-center items-center'>
         <div className='text-4xl text-primary font-bold'>
-          01:03
+          <Stopwatch isRunning={isRunning} />
         </div>
       </div>
       <div className="people">

@@ -8,12 +8,13 @@ import useChar from '../context/charContext'
 import axios from 'axios'
 import correct from '../assets/correct.mp3'
 import wrong from '../assets/wrong.mp3'
+import { useNavigate } from 'react-router-dom'
 
 const GamePage = () => {
   const BASE_URL = 'http://localhost:3000'
   const { id } = useParams()
   const { dataset } = useChar()
-
+  const navigate = useNavigate()
   const partyChar = [1, 2, 3]
   const concertChar = [4, 5, 6]
   const gardenChar = [7, 8, 9]
@@ -103,12 +104,17 @@ const GamePage = () => {
 
     if(toCheck === partyCheck || toCheck === concertCheck || toCheck === gardenCheck){
       console.log('Game Over')
+      navigate('/gameover')
     }
   }
 
   useEffect(() => {
     checkGameOver()
   }, [isFound])
+
+  const handleExit = () => {
+    setIsFound([])
+  }
 
   return (
     <div className=''>
@@ -147,7 +153,8 @@ const GamePage = () => {
         }
       </div>
       <div className='flex justify-center items-center'>
-        <Link to="/home" className="exit btn bg-secondary my-5">Exit</Link>
+        <Link to="/home" className="exit btn bg-secondary my-5"
+        onClick={handleExit}>Exit</Link>
       </div>
     </div>
   )

@@ -26,6 +26,7 @@ createRoot(document.getElementById('root')).render(
               <Route path='/gameover' element={<GameOverPage />} />
               <Route path='/leaderboard' element={<Leaderboard />} />
           </Route>
+          
         </Routes>
       </BrowserRouter>
     </CharProvider>

@@ -1,30 +1,52 @@
-import React, { useContext, useState } from 'react'
+import React, { use, useContext, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'  // Fixed import
 import FindImageComponent from './FindImageComponent'
 import concertImg from '../assets/concert.jpg'
 import partyImg from '../assets/party.png'
 import gardenImg from '../assets/office.jpg'
 import useChar from '../context/charContext'
+import axios from 'axios'
 
 const GamePage = () => {
+  const BASE_URL = 'http://localhost:3000'
   const { id } = useParams()
   const { dataset } = useChar()
 
   const [clicked, setClicked] = useState(false)
+  const [x, setX] = useState(null)
+  const [y, setY] = useState(null)
 
   const handleCharClick = (e, charId) => {
     e.preventDefault()
-    const rect = e.target.getBoundingClientRect();
-    const x = Math.round(((e.clientX - rect.left)/ rect.width) * 100);
-    const y = Math.round(((e.clientY - rect.top)/ rect.height) * 100);
+    console.log(x, y, charId)
+    isMatching(x, y, charId)
     
   }
+
+  const isMatching = async (x, y, charId) => {
+    try {
+      const res = await axios.post(BASE_URL + '/game/check', 
+      {
+        id: charId,
+        x : x,
+        y : y
+      }, {
+        withCredentials: true
+      });
+      
+      console.log(res.data); // Log the response data
+    } catch (error) {
+      console.error('Error in isMatching:', error);
+    }
+  };
 
   const handleClick = (e) => {
     e.preventDefault()
     const rect = e.target.getBoundingClientRect();
     const x = Math.round(((e.clientX - rect.left)/ rect.width) * 100);
     const y = Math.round(((e.clientY - rect.top)/ rect.height) * 100);
+    setX(x)
+    setY(y)
     setClicked(true)
     positionOverlay(x, y)
   }

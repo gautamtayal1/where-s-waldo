@@ -1,13 +1,4 @@
 import React from 'react'
-import partyImage1 from '../assets/party1.png'
-import partyImage2 from '../assets/party2.png'
-import partyImage3 from '../assets/party3.png'
-import concertImage1 from '../assets/concert1.png'
-import concertImage2 from '../assets/concert2.png'
-import concertImage3 from '../assets/concert3.png'
-import gardenImage1 from '../assets/office1.png'
-import gardenImage2 from '../assets/office2.png'
-import gardenImage3 from '../assets/office3.png'
 import useChar from '../context/charContext'
 
 const FindImageComponent = ({page}) => {

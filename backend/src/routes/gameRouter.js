@@ -1,8 +1,7 @@
 const express = require('express')
 const gameRouter = express.Router()
+const charCheckController = require('../controllers/charCheckController')
 
-gameRouter.get('/', (req, res) => {
-  res.send('Hello World')
-})
+gameRouter.post('/check', charCheckController)
 
 module.exports = gameRouter

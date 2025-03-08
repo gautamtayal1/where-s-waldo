@@ -19,26 +19,28 @@ const FindImageComponent = ({page}) => {
     },
     concert : {
       person1: ['Taylor', concertImage1],
-      person2: ['Jordan', concertImage2],
-      person3: ['Casey', concertImage3],
+      person2: ['Casey', concertImage2],
+      person3: ['Jordan', concertImage3],
     },
     garden : {
       person1: ['Evelyn', gardenImage1],
       person2: ['Leo', gardenImage2],
-      person3: ['Maya', gardenImage3],
+      person3: ['Jen', gardenImage3],
     },
   }
 
-  console.log(dataset[page]);
-  
-
   return (
     
-    <div className='flex justify-center items-center gap-10 p-4'>
-      {Object.values(dataset[page]).map((data) => (
-        <div>
-        <div>
-          <img src={data[1]} alt="party" className='h-[80px] w-[50px] rounded-[10px]'/>
+    <div className='relative flex justify-center items-center gap-10 p-4'>
+      {Object.values(dataset[page]).map((data, index) => (
+        <div key={index}>
+        <div className='h-[80px] w-[50px] cursor-pointer'>
+          <img 
+          src={data[1]} 
+          alt="party" 
+          className='h-[80px] w-[50px] rounded-[10px] cursor-pointer'
+          
+          />
         </div>
         <p>{data[0]}</p>
         </div>

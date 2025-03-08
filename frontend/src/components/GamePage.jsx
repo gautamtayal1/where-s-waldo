@@ -11,6 +11,17 @@ const GamePage = () => {
   const {id}= page
   console.log(id)
 
+  const handleClick = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    console.log("clicked handled")
+    const rect = e.target.getBoundingClientRect();
+    const x = ((e.clientX - rect.left)/ rect.width) * 100;
+    const y = ((e.clientY - rect.top)/ rect.height) * 100;
+    console.log(x, y);
+    
+  }
+
   const imageLink = () =>{
     if(id == 'concert'){
       return concertImg
@@ -22,14 +33,19 @@ const GamePage = () => {
 
   return (
     <div>
-      <div className='timer h-[10vh]'>timer</div>
+      <div className='timer h-[12vh] flex justify-center items-center'>
+        <div className='text-4xl text-primary font-bold'>
+          01:03
+        </div>
+      </div>
       <div className="people">
         <FindImageComponent page = {id}/>
       </div>
 
       <div className="image flex justify-center items-center">
         <img src={imageLink()} alt="" 
-        className='h-[120vh] w-[98vw] rounded'/>
+        className='h-[120vh] w-[98vw] rounded'
+        onClick={handleClick}/>
       </div>
     <div className='flex justify-center items-center'>
      <Link to="/home" className="exit btn bg-secondary my-5">Exit</Link>

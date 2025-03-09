@@ -33,4 +33,46 @@ const endSession = async(req, res) => {
   }
 }
 
-module.exports = {createSession, endSession}
+const createUser = async(req, res) => {
+  try {
+    const {name, sessionId} = req.body
+    const newUser = await prisma.user.create({
+      data: {username : name}
+    })
+
+    const updatedSession = await prisma.gameSession.update({
+      where: {id: sessionId},
+      data: {username: newUser.username},
+      select: {
+        id: true,
+        startTime: true,
+        endTime: true,
+        timeTaken: true,
+        username: true,
+        gameName: true,
+      }
+    })
+    res.send({updatedSession, newUser})
+  } catch (error) {
+    console.error('Error in createUser:', error);
+  }
+}
+
+const getLeaderboard = async(req, res) => {
+ try {
+  const {gameName} = req.body
+  const session = await prisma.gameSession.findMany({
+    where: {
+      gameName
+    }
+  }
+)
+  res.send(session)
+
+ } catch (error) {
+  console.error('Error in getLeaderboard:', error);
+ }
+}
+
+
+module.exports = {createSession, endSession, getLeaderboard, createUser}

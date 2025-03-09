@@ -29,7 +29,6 @@ const GamePage = () => {
   const [x, setX] = useState(null)
   const [y, setY] = useState(null)
   const [sessionId, setSessionId] = useState(null)
-  const [sessionCreated, setSessionCreated] = useState(false)
 
   const handleCharClick = (e, charId) => {
     e.preventDefault()
@@ -108,7 +107,12 @@ const GamePage = () => {
       console.log('Game Over')
       setIsRunning(false)
       endSession()
-      navigate('/gameover')
+      if (sessionId) {
+        navigate('/gameover', { state: { sessionId, gameName: id }, replace: true  });
+      } else {
+        console.error('Session ID is null!');
+        alert('Error: Session ID is missing.');
+      }
     }
   }
   useEffect(() => {
